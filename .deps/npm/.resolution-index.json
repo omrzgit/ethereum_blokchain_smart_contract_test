@@ -1,0 +1,21 @@
+{
+  "StudentManagement.sol": {
+    "__sources__": {
+      "StudentManagement.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract StudentManagement {\r\n\r\n    struct Student {\r\n        uint id;\r\n        string name;\r\n        uint age;\r\n        string department;\r\n        bool exists;\r\n    }\r\n\r\n    mapping(uint => Student) public students;\r\n\r\n    // Add new student\r\n    function addStudent(\r\n        uint _id,\r\n        string memory _name,\r\n        uint _age,\r\n        string memory _department\r\n    ) public {\r\n\r\n        require(!students[_id].exists, \"Student already exists\");\r\n\r\n        students[_id] = Student(\r\n            _id,\r\n            _name,\r\n            _age,\r\n            _department,\r\n            true\r\n        );\r\n    }\r\n\r\n    // Update existing student\r\n    function updateStudent(\r\n        uint _id,\r\n        string memory _name,\r\n        uint _age,\r\n        string memory _department\r\n    ) public {\r\n\r\n        require(students[_id].exists, \"Student does not exist\");\r\n\r\n        students[_id].name = _name;\r\n        students[_id].age = _age;\r\n        students[_id].department = _department;\r\n    }\r\n\r\n    // Retrieve student data\r\n    function getStudent(uint _id)\r\n        public\r\n        view\r\n        returns (\r\n            uint,\r\n            string memory,\r\n            uint,\r\n            string memory\r\n        )\r\n    {\r\n        require(students[_id].exists, \"Student does not exist\");\r\n\r\n        Student memory s = students[_id];\r\n\r\n        return (s.id, s.name, s.age, s.department);\r\n    }\r\n}",
+        "file": "StudentManagement.sol"
+      }
+    }
+  },
+  "StudentRecords.sol": {
+    "__sources__": {}
+  },
+  "StudentRecord.sol": {
+    "__sources__": {
+      "StudentRecord.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.20;\r\n\r\ncontract StudentRecords {\r\n    struct Student {\r\n        string name;\r\n        string studentId;\r\n        string grade;\r\n        bool exists;\r\n    }\r\n\r\n    mapping(string => Student) private students;\r\n    string[] private studentIds;\r\n\r\n    event StudentAdded(string studentId, string name, string grade);\r\n    event StudentUpdated(string studentId, string name, string grade);\r\n\r\n    function addStudent(\r\n        string memory _studentId,\r\n        string memory _name,\r\n        string memory _grade\r\n    ) public {\r\n        require(bytes(_studentId).length > 0, \"Student ID is required\");\r\n        require(bytes(_name).length > 0, \"Name is required\");\r\n        require(bytes(_grade).length > 0, \"Grade is required\");\r\n        require(!students[_studentId].exists, \"Student already exists\");\r\n\r\n        students[_studentId] = Student(_name, _studentId, _grade, true);\r\n        studentIds.push(_studentId);\r\n\r\n        emit StudentAdded(_studentId, _name, _grade);\r\n    }\r\n\r\n    function updateStudent(\r\n        string memory _studentId,\r\n        string memory _name,\r\n        string memory _grade\r\n    ) public {\r\n        require(students[_studentId].exists, \"Student does not exist\");\r\n        require(bytes(_name).length > 0, \"Name is required\");\r\n        require(bytes(_grade).length > 0, \"Grade is required\");\r\n\r\n        students[_studentId].name = _name;\r\n        students[_studentId].grade = _grade;\r\n\r\n        emit StudentUpdated(_studentId, _name, _grade);\r\n    }\r\n\r\n    function getStudent(\r\n        string memory _studentId\r\n    ) public view returns (string memory, string memory, string memory) {\r\n        require(students[_studentId].exists, \"Student does not exist\");\r\n\r\n        Student memory student = students[_studentId];\r\n\r\n        return (student.studentId, student.name, student.grade);\r\n    }\r\n\r\n    function getTotalStudents() public view returns (uint256) {\r\n        return studentIds.length;\r\n    }\r\n\r\n    function getStudentIdByIndex(uint256 _index) public view returns (string memory) {\r\n        require(_index < studentIds.length, \"Invalid index\");\r\n        return studentIds[_index];\r\n    }\r\n}",
+        "file": "StudentRecord.sol"
+      }
+    }
+  }
+}

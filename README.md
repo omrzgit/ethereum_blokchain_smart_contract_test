@@ -1,6 +1,6 @@
 ## 🔗 Ethereum Blockchain Smart Contract — Student Records
 
-A simple Solidity smart contract for learning solidty built to manage student records, using the Remix Ethereum IDE.
+A simple Solidity smart contract for learning Solidity. Built to manage student records, using the Remix Ethereum IDE.
 
 ### 📋 Overview
 
